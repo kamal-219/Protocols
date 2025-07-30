@@ -1,0 +1,79 @@
+C51 COMPILER V9.60.7.0   LCD                                                               07/30/2025 14:15:42 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE LCD
+OBJECT MODULE PLACED IN .\Objects\lcd.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE lcd.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\lcd.l
+                    -st) TABS(2) OBJECT(.\Objects\lcd.obj)
+
+line level    source
+
+   1          #include<reg52.h>
+   2          #define lcd P2
+   3          sbit rs=P0^0;
+   4          sbit rw=P0^1;
+   5          sbit e=P0^2;
+   6          
+   7          void lcds();
+   8          void cmd(unsigned char a);
+   9          void datas(unsigned char b);
+  10          void word(unsigned char *s);
+  11          void delay();
+  12          void lcds(){
+  13   1        cmd(0X38);
+  14   1        cmd(0X0c);
+  15   1        cmd(0X01);
+  16   1        cmd(0X06);
+  17   1        cmd(0X80);
+  18   1      }
+  19          void cmd(unsigned char a){
+  20   1        lcd=a;
+  21   1        rs=0;
+  22   1        rw=0;
+  23   1        e=1;
+  24   1        delay();
+  25   1        e=0;
+  26   1      }
+  27          void datas(unsigned char b){
+  28   1        lcd=b;
+  29   1        rs=1;
+  30   1        rw=0;
+  31   1        e=1;
+  32   1        delay();
+  33   1        e=0;
+  34   1      }
+  35          void word(unsigned char *s){
+  36   1        while(*s){
+  37   2          datas(*s++);
+  38   2        }
+  39   1      }
+  40          void delay(){
+  41   1        unsigned int delay;
+  42   1        for(delay=0;delay<50000;delay++);
+  43   1      }
+  44          int main(){
+  45   1        lcds();
+  46   1        while(1){
+  47   2          cmd(0x80);
+  48   2          word("silicon");
+  49   2          delay();
+  50   2          cmd(0x01);
+  51   2          delay();
+  52   2        }
+  53   1      }
+
+C51 COMPILER V9.60.7.0   LCD                                                               07/30/2025 14:15:42 PAGE 2   
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    146    ----
+   CONSTANT SIZE    =      8    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
